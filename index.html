@@ -1,334 +1,564 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TV SFC LA UNION</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV SFC LA UNION</title>
+    <style>
+        :root {
+            --primary: #22c55e;
+            --dark-bg: #020617;
+            --card-bg: rgba(2, 6, 23, 0.95);
+            --text-light: #f8fafc;
+            --text-gray: #94a3b8;
+            --heart: #ef4444;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbDJ7q8xdCdAxsDDb5lQGbckDfQVc5aIb3YpU2WHq4VQ&s=10") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-light);
+            padding-bottom: 60px;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: -1;
+            backdrop-filter: blur(2px);
+        }
+        nav {
+            background: rgba(2, 6, 23, 0.95);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-bottom: 1px solid #1e293b;
+        }
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        nav a:hover, nav a.active { background: var(--primary); color: var(--dark-bg); }
+        .logo-float { display: block; margin: 20px auto; max-width: 150px; filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.5)); }
+        section { padding: 15px; max-width: 1100px; margin: auto; }
+        .card { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; }
+        .card h2 { color: var(--primary); margin-top: 0; border-bottom: 2px solid rgba(34, 197, 94, 0.2); padding-bottom: 10px; display: inline-block; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 15px; max-height: 300px; overflow-y: auto; padding-right: 5px; }
+        .item { background: rgba(30, 41, 59, 0.6); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        .item:hover { transform: translateY(-5px); background: rgba(30, 41, 59, 0.9); border-color: var(--primary); box-shadow: 0 5px 15px rgba(34, 197, 94, 0.2); }
+        .item img { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; margin-bottom: 8px; border: 2px solid #334155; }
+        .item p { margin: 0; font-size: 0.85rem; line-height: 1.2; color: #e2e8f0; }
+        
+        /* --- NUEVO AJUSTE PARA DEPORTES --- */
+        #deportesGrid .item {
+            min-height: 140px;      /* Altura mínima para que quepa la imagen */
+        }
+        #deportesGrid .item img {
+            width: 100%;            /* Ancho completo del contenedor */
+            max-width: 120px;       /* Máximo en pantallas grandes */
+            height: 70px;           /* Altura fija para mantener proporción */
+            object-fit: contain;    /* Muestra la imagen COMPLETA sin recortar */
+            border-radius: 8px;     /* Bordes rectangulares suaves */
+            background: #000;       /* Fondo negro para rellenar */
+            border: 1px solid var(--primary);
+        }
+        
+        /* Ajustes responsivos para deportes */
+        @media (max-width: 768px) {
+            #deportesGrid .item img {
+                max-width: 100px;   /* Más pequeño en móviles */
+                height: 60px;
+            }
+            #deportesGrid .item {
+                min-height: 120px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #deportesGrid .item img {
+                max-width: 85px;    /* Aún más pequeño en pantallas muy pequeñas */
+                height: 50px;
+            }
+            #deportesGrid .item {
+                min-height: 110px;
+            }
+        }
+        /* ---------------------------------- */
 
-<style>
-body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbDJ7q8xdCdAxsDDb5lQGbckDfQVc5aIb3YpU2WHq4VQ&s=10") no-repeat center center fixed;
-background-size:cover;
-color:#fff;
-}
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.6);
-z-index:-1;
-}
-.logo-float{
-position:absolute;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-max-width:180px;
-z-index:1000;
-}
-nav{
-background:#020617;
-display:flex;
-justify-content:center;
-gap:16px;
-padding:12px;
-flex-wrap:wrap;
-}
-nav a{
-color:#22c55e;
-text-decoration:none;
-font-weight:bold;
-}
-section{
-padding:30px 16px;
-max-width:1100px;
-margin:auto;
-}
-.card{
-background:rgba(2,6,23,.9);
-border-radius:14px;
-padding:18px;
-margin-bottom:20px;
-}
-.card h2{color:#22c55e;margin-top:0}
-.btn{
-background:#22c55e;
-color:#020617;
-padding:10px 14px;
-border-radius:8px;
-border:none;
-font-weight:bold;
-margin:6px;
-cursor:pointer;
-}
-.video-box{
-width:100%;
-aspect-ratio:16/9;
-background:#000;
-border-radius:14px;
-overflow:hidden;
-}
-.video-box iframe,
-.video-box video{
-width:100%;
-height:100%;
-border:0;
-}
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:12px;
-}
-.grid .item{
-background:rgba(2,6,23,.95);
-border-radius:12px;
-padding:10px;
-text-align:center;
-cursor:pointer;
-}
-.grid img{
-max-width:80px;
-margin-bottom:6px;
-}
-footer{
-background:#020617;
-text-align:center;
-padding:18px;
-font-size:.9rem;
-color:#94a3b8;
-}
-</style>
+        /* ESTILO DE LIKES */
+        .like-container { position: absolute; top: 5px; right: 5px; z-index: 10; cursor: pointer; font-size: 1.2rem; transition: transform 0.2s; color: rgba(255,255,255,0.5); }
+        .like-container.active { color: var(--heart); transform: scale(1.2); }
+
+        /* BOTÓN FLOTANTE */
+        .btn-notif { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; color: var(--dark-bg); cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 1000; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+
+        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .video-box iframe, .video-box video { width: 100%; height: 100%; border: 0; }
+        audio { width: 100%; margin-top: 15px; filter: invert(0.9) hue-rotate(180deg); border-radius: 8px; }
+        .btn { background: var(--primary); color: var(--dark-bg); padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: transform 0.2s; text-decoration: none; display: inline-block; margin: 5px; }
+        .btn-danger { background: #ef4444; color: white; padding: 5px 10px; font-size: 0.8rem; }
+        .admin-input, .admin-select { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020617; z-index: 1500; overflow-y: auto; }
+        .admin-container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .admin-item-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; }
+        .custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .custom-modal { background: #1e293b; padding: 25px; border-radius: 16px; width: 90%; max-width: 400px; border: 1px solid #334155; }
+        #toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: rgba(15, 23, 42, 0.95); border-left: 4px solid var(--primary); color: white; padding: 12px 20px; border-radius: 8px; font-size: 14px; animation: fadeInOut 3s forwards; display: flex; align-items: center; gap: 10px; }
+        @keyframes fadeInOut { 0% { opacity:0; transform:translateY(20px); } 10% { opacity:1; transform:translateY(0); } 90% { opacity:1; transform:translateY(0); } 100% { opacity:0; transform:translateY(-20px); } }
+    </style>
 </head>
-
 <body>
+<div id="toast-container"></div>
+<div id="loginModal" class="custom-modal-overlay">
+    <div class="custom-modal" style="text-align:center;">
+        <h3 style="color:var(--primary)">Acceso Administrador</h3>
+        <input type="password" id="adminPassInput" class="admin-input" placeholder="Contraseña">
+        <button onclick="attemptLogin()" class="btn" style="width:100%">Entrar</button>
+        <button onclick="document.getElementById('loginModal').style.display='none'" class="btn btn-gray" style="width:100%; margin-top:10px; background:#64748b; color:white;">Cancelar</button>
+    </div>
+</div>
 
-<img src="https://c4fd0838c8.cbaul-cdnwnd.com/952b98c6f38743770439abf4fa7ac74e/200000117-3e8c73e8c9/20260127_062930.webp" class="logo-float">
+<img src="https://c4fd0838c8.cbaul-cdnwnd.com/952b98c6f38743770439abf4fa7ac74e/200000117-3e8c73e8c9/20260127_062930.webp" class="logo-float" alt="Logo">
 
 <nav>
-<a href="#inicio">Inicio</a>
-<a href="#eventos">Eventos</a>
-<a href="#canales">Canales</a>
-<a href="#radio">Radio</a>
-<a href="#anuncio">Anuncio</a>
-<a href="#evento">evento Deportivo</a>
-<a href="#videos">Videos</a>
-<a href="#religiosos">Religiosos</a>
-<a href="#contacto">Contacto</a>
+    <a href="#inicio">Inicio</a>
+    <a href="#facebooklive">FB Live</a>
+    <a href="#canales">Canales</a>
+    <a href="#radio">Radios</a>
+    <a href="#videos">Videos</a>
+    <a href="#religiosos">Religioso</a>
+    <a href="#deportes">Deportes</a>
+    <a href="#anuncios">Anuncios</a>
+    <a href="#" onclick="openLogin()" style="background:#334155; margin-left:10px;">Admin</a>
 </nav>
 
 <section id="inicio">
-<div class="card" style="text-align:center">
-<h2>IPTV PREMIUM EN GUATEMALA</h2>
-<p>Canales Eventos  Radios  Smart TV</p>
-</div>
+    <div class="card" style="text-align:center">
+        <h2>TV SFC LA UNION</h2>
+        <p style="font-size:1.1rem; color:#cbd5e1;">El Canal De La Unión</p>
+    </div>
 </section>
 
-<section id="eventos">
-<div class="card">
-<h2>Eventos en Vivo</h2>
-
-<button class="btn" onclick="cambiarEvento(1)">Evento 1</button>
-<button class="btn" onclick="cambiarEvento(2)">Evento 2</button>
-<button class="btn" onclick="cambiarEvento(3)">Evento 3</button>
-
-<div class="video-box" style="margin-top:12px">
-<iframe id="eventoFrame" src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/TVEmigrante/videos/860481873417887/&show_text=false" allowfullscreen></iframe>
-</div>
-</div>
+<section id="facebooklive">
+    <div class="card">
+        <h2>Facebook Live</h2>
+        <div class="grid" id="eventosGrid"></div>
+        <div class="video-box"><iframe id="facebookliveFrame" allowfullscreen></iframe></div>
+    </div>
 </section>
 
 <section id="canales">
-<div class="card">
-<h2>Canales en Vivo</h2>
-
-<div class="grid">
-<div class="item" onclick="playCanal(1)">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Tv_azteca_logo.png">
-Mas Tv
-</div>
-<div class="item" onclick="playCanal(2)">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Telemundo_logo.svg">
-Luna Visin Xela
-</div>
-<div class="item" onclick="playCanal(3)">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Logo_CNN.svg">
-TDS SOLOLA
-</div>
-</div>
-
-<div class="video-box" style="margin-top:14px">
-<video id="tvPlayer" controls playsinline></video>
-</div>
-</div>
+    <div class="card">
+        <h2>Canales de TV</h2>
+        <div class="grid" id="canalesGrid"></div>
+        <div class="video-box"><video id="tvPlayer" controls></video></div>
+    </div>
 </section>
 
 <section id="radio">
-<div class="card">
-<h2>Radios Guatemala</h2>
-
-<div class="grid">
-<div class="item" onclick="playRadio(1)">
-<img src="https://i.ytimg.com/vi/t80Hoav1qDQ/hq720.jpg">
-La Sonora
-</div>
-<div class="item" onclick="playRadio(2)">
-<img src="https://radios.com.gt/wp-content/uploads/2020/03/949-fm.png">
-949 FM
-</div>
-<div class="item" onclick="playRadio(3)">
-<img src="https://radios.com.gt/wp-content/uploads/2020/03/emisoras-unidas.png">
-Emisoras Unidas
-</div>
-</div>
-
-<audio id="radioPlayer" controls style="width:100%;margin-top:12px"></audio>
-</div>
+    <div class="card">
+        <h2>Radios Guatemaltecas</h2>
+        <div class="grid" id="radioGrid"></div>
+        <audio id="radioPlayer" controls></audio>
+    </div>
 </section>
 
-<section id="nota-informativa">
-<div class="card" style="text-align:center">
-<h2>NOTA INFORMATIVA</h2>
-<img src=" " style="width:100%;border-radius:14px">
-</div>
-</section>
-<section id="Eventos Deportivos">
-<div class="card" style="text-align:center">
-<h2>EventosDeportivos</h2>
-<img src="https://c4fd0838c8.cbaul-cdnwnd.com/952b98c6f38743770439abf4fa7ac74e/200000121-b7e7ab7e7c/VEALO%20PO_20260128_120515_0000.webp?ph=c4fd0838c8" style="width:100%;border-radius:14px">
-<p>Adquiere tu servicio hoy</p>
-</div>
+<section id="videos">
+    <div class="card">
+        <h2>Radio SFC</h2>
+        <div class="grid" id="radioSFCGrid"></div>
+        <audio id="radioSFCPlayer" controls></audio>
+    </div>
 </section>
 
-<section id="anuncio">
-<div class="card" style="text-align:center">
-<h2>ANUNCIO COMERCIAL</h2>
-</div>
-</section>
-
-<section id="videos 24/7">
-<div class="card">
-<h2>Videos 24/7</h2>
-
-<button class="btn" onclick="cambiarVideo(1)">24/7 Hermosa musica de invierno</button>
-<button class="btn" onclick="cambiarVideo(2)">24/7 Verano 2026Musica</button>
-<button class="btn" onclick="cambiarVideo(3)">24/7 Los Acosta 2026</button>
-<button class="btn" onclick="cambiarVideo(4)">24/7 Los Temerarios</button>
-<button class="btn" onclick="cambiarVideo(5)">24/7 Gruperas</button>
-<button class="btn" onclick="cambiarVideo(6)">24/7 LosTemarios del recuerdo</button>
-<button class="btn" onclick="cambiarVideo(7)">24/7 pop latino</button>
-<button class="btn" onclick="cambiarVideo(8)">24/7 mix duranguense</button>
-<button class="btn" onclick="cambiarVideo(9)">24/7 Duranguense</button>
-<button class="btn" onclick="cambiarVideo(10)">24/7Puro duranguense</button>
-<button class="btn" onclick="cambiarVideo(11)">24/7 bachata</button>
-
-
-<div class="video-box" style="margin-top:12px">
-<iframe id="videoFrame" src="https://www.youtube.com/embed/UMURCYbO7H0" allowfullscreen></iframe>
-</div>
-</div>
+<section id="videos">
+    <div class="card">
+        <h2>Videos 24/7</h2>
+        <div class="grid" id="videosGrid"></div>
+        <div class="video-box"><iframe id="videoFrame" allowfullscreen></iframe></div>
+    </div>
 </section>
 
 <section id="religiosos">
-<div class="card">
-<h2>Videos 24/7 Religiosos</h2>
-
-<button class="btn" onclick="cambiarVideoReligioso(1)">24/7 Música Católica</button>
-<button class="btn" onclick="cambiarVideoReligioso(2)">24/7 Alabanzas Cristianas</button>
-<button class="btn" onclick="cambiarVideoReligioso(3)">24/7 Música Cristiana</button>
-<button class="btn" onclick="cambiarVideoReligioso(4)">24/7 Música Gospel</button>
-<button class="btn" onclick="cambiarVideoReligioso(5)">24/7 Cantos Religiosos</button>
-<button class="btn" onclick="cambiarVideoReligioso(6)">24/7 Adoración y Alabanza</button>
-<button class="btn" onclick="cambiarVideoReligioso(7)">24/7 Himnos Cristianos</button>
-<button class="btn" onclick="cambiarVideoReligioso(8)">24/7 Música de Reflexión</button>
-<button class="btn" onclick="cambiarVideoReligioso(9)">24/7 Música Cristianatechno</button>
-
-<div class="video-box" style="margin-top:12px">
-<iframe id="videoReligiosoFrame" src="https://www.youtube.com/embed/jPwQKJS7Tms" allowfullscreen></iframe>
-</div>
-</div>
+    <div class="card">
+        <h2>Contenido Religioso</h2>
+        <div class="grid" id="religiososGrid"></div>
+        <div class="video-box"><iframe id="religiosoFrame" allowfullscreen></iframe></div>
+    </div>
 </section>
 
-<section id="contacto">
-<div class="card" style="text-align:center">
-<h2>Contacto</h2>
-<a class="btn" href="https://wa.me/50200000000">WhatsApp</a>
-<a class="btn" href="https://www.facebook.com/profile.php?id=61586550787034">Facebook</a>
-</div>
+<section id="deportes">
+    <div class="card">
+        <h2>Deportes</h2>
+        <div class="grid" id="deportesGrid"></div>
+        <div class="video-box"><iframe id="deportesFrame" allowfullscreen></iframe></div>
+    </div>
 </section>
 
-<footer> 2026 TV SFC LA UNIN</footer>
+<section id="anuncios">
+    <div class="card">
+        <h2>Anuncios</h2>
+        <div class="grid" id="anunciosGrid"></div>
+        <div class="video-box" id="anuncioContent"></div>
+    </div>
+</section>
+
+<div class="btn-notif" onclick="compartirApp()"></div>
+
+<div id="adminPanel">
+    <div class="admin-container">
+        <h2 style="color:var(--primary)">Panel de Administrador</h2>
+        <button class="btn btn-danger" onclick="cerrarSesion()">Cerrar Sesión</button>
+        
+        <div class="card">
+            <h3>Agregar Nuevo Contenido</h3>
+            <select id="categoria" class="admin-select" onchange="toggleStreamField()">
+                <option value="">Selecciona categoría</option>
+                <option value="eventos">Facebook Live</option>
+                <option value="canales">Canales TV</option>
+                <option value="radio">Radios</option>
+                <option value="radioSFC">Radio SFC</option>
+                <option value="videos">Videos 24/7</option>
+                <option value="religiosos">Religioso</option>
+                <option value="deportes">Deportes</option>
+                <option value="anuncios">Anuncios</option>
+            </select>
+            <input type="text" id="nombre" class="admin-input" placeholder="Nombre">
+            <div id="streamContainer">
+                <input type="text" id="stream1" class="admin-input" placeholder="URL del stream o video (opcional si subes imagen)">
+            </div>
+            
+            <div style="margin: 15px 0; padding: 15px; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.3);">
+                <p style="margin: 0 0 10px 0; color: var(--primary); font-weight: bold;"> Logo/Imagen (2 opciones):</p>
+                
+                <label style="display: block; margin-bottom: 8px; color: #cbd5e1; font-size: 0.9rem;">
+                    <input type="radio" name="logoOption" value="link" checked onchange="toggleLogoInput()"> 
+                    Opción 1: Usar link de imagen
+                </label>
+                <input type="text" id="logo" class="admin-input" placeholder="https://ejemplo.com/imagen.png" style="margin-bottom: 15px;">
+                
+                <label style="display: block; margin-bottom: 8px; color: #cbd5e1; font-size: 0.9rem;">
+                    <input type="radio" name="logoOption" value="upload" onchange="toggleLogoInput()"> 
+                    Opción 2: Subir imagen desde tu dispositivo
+                </label>
+                <input type="file" id="logoFile" class="admin-input" accept="image/*" style="display: none; padding: 8px;">
+                <div id="imagePreview" style="display: none; margin-top: 10px; text-align: center;">
+                    <img id="previewImg" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid var(--primary);">
+                </div>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: #94a3b8; margin: 10px 0;">
+                 <strong>Tip:</strong> Puedes agregar:
+                <br>• Solo imagen (sin URL de stream)
+                <br>• Solo URL de stream (sin imagen personalizada)
+                <br>• Ambos (stream + imagen personalizada)
+            </p>
+            
+            <button class="btn" onclick="guardarContenido()">Guardar</button>
+        </div>
+
+        <div class="card">
+            <h3>Ver y Eliminar Contenido</h3>
+            <select id="verCategoria" class="admin-select" onchange="mostrarTodosElementos()">
+                <option value="">Selecciona categoría</option>
+                <option value="eventos">Facebook Live</option>
+                <option value="canales">Canales TV</option>
+                <option value="radio">Radios</option>
+                <option value="radioSFC">Radio SFC</option>
+                <option value="videos">Videos 24/7</option>
+                <option value="religiosos">Religioso</option>
+                <option value="deportes">Deportes</option>
+                <option value="anuncios">Anuncios</option>
+            </select>
+            <div id="listaElementos"></div>
+        </div>
+    </div>
+</div>
 
 <script>
-const eventos={
-1:"https://www.facebook.com/TVEmigrante/videos/860481873417887/",
-2:"https://www.facebook.com/100091993670606/videos/26636647165924728/",
-3:"https://www.facebook.com/100091993670606/videos/26636647165924728/"
-};
+    let isAdmin = false;
+    const PASS_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
-function cambiarEvento(id){
-document.getElementById("eventoFrame").src=
-"https://www.facebook.com/plugins/video.php?href="+encodeURIComponent(eventos[id])+"&show_text=false";
-}
+    const dataInicial = {
+        canales: {1: {nombre: "Televisión de Guatemala", logo: "https://c4fd0838c8.cbaul-cdnwnd.com/952b98c6f38743770439abf4fa7ac74e/200000116-52ea652ea8/326-3266742_trecevision-guatemala-logo-removebg-preview%20%281%29.png?ph=c4fd0838c8", url: "https://d6vox97kl6jfj.cloudfront.net/out/v1/df5d1eb0ad704c4c9eeb70d1d946fee5/index.m3u8"}},
+        radio: {1: {nombre: "Emisoras Unidas", logo: "https://c4fd0838c8.cbaul-cdnwnd.com/952b98c6f38743770439abf4fa7ac74e/200000128-3ac683ac6a/unnamed%20%282%29.png?ph=c4fd0838c8", url: "https://stream-172.zeno.fm/tfcgfdag9ueuv"}},
+        radioSFC: {1: {nombre: "Radio Magica XD", logo: "https://c4fd0838c8.cbaul-cdnwnd.com/952b98c6f38743770439abf4fa7ac74e/200000070-bdc4dbdc4e/1000088647_855e8025d37c78150bf9020999f44f42-4_11_2025%2C%2013_58_23_20260119_201607_0000.png?ph=c4fd0838c8", url: "https://cloudstream2036.conectarhosting.com/8102/stream"}},
+        videos: {1: {nombre: "Video 24/7", logo: "https://via.placeholder.com/80", url: "https://www.youtube.com/embed/UMURCYbO7H0"}},
+        religiosos: {1: {nombre: "Religioso 24/7", logo: "https://via.placeholder.com/80", url: "https://www.youtube.com/embed/jPwQKJS7Tms"}},
+        deportes: {}, anuncios: {}, eventos: {1: {nombre: "ProduccionesLaJoyitaHD", logo: "https://c4fd0838c8.cbaul-cdnwnd.com/952b98c6f38743770439abf4fa7ac74e/200000046-4313743139/Concierto%20internacional%20aldea%20xeaj_20260119_202530_0000.png?ph=c4fd0838c8", url: "https://www.facebook.com/100077985564115/videos/en-vivo/889371953794703/"}}
+    };
 
-const canales={
-1:"http://iptv.streamhispanatv.net:8080/live/playgt/playgt2023/65.m3u8",
-2:"https://cdn.streamhispanatv.net:3670/live/lunavisionlive.m3u8",
-3:"http://iptv.streamhispanatv.net:8080/playgt/playgt2023/52.m3u8"
-};
+    let storage = JSON.parse(localStorage.getItem("tv_sfc_data")) || { canales: {}, radio: {}, radioSFC: {}, videos: {}, religiosos: {}, deportes: {}, anuncios: {}, eventos: {} };
+    let likes = JSON.parse(localStorage.getItem("tv_sfc_likes")) || {};
 
-function playCanal(id){
-const v=document.getElementById("tvPlayer");
-v.src=canales[id];
-v.play().catch(()=>{});
-}
+    function toggleLike(e, id) {
+        e.stopPropagation();
+        likes[id] = !likes[id];
+        localStorage.setItem("tv_sfc_likes", JSON.stringify(likes));
+        renderAllGrids();
+    }
 
-const radios={
-1:"https://d63yyf5yop3gl.cloudfront.net/index.m3u8",
-2:"https://icecast.mega-streaming.net:8000/949fm",
-3:"https://icecast.mega-streaming.net:8000/emisoras"
-};
+    function showToast(msg, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        
+        let icon = '';
+        let borderColor = 'var(--primary)';
+        
+        if (type === 'error') {
+            icon = '';
+            borderColor = '#ef4444';
+        } else if (type === 'info') {
+            icon = '';
+            borderColor = '#3b82f6';
+        }
+        
+        toast.style.borderLeftColor = borderColor;
+        toast.innerHTML = `<span style="font-size: 1.2rem;">${icon}</span> <span>${msg}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+    }
 
-function playRadio(id){
-const r=document.getElementById("radioPlayer");
-r.src=radios[id];
-r.play().catch(()=>{});
-}
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
-const videosYT={
-1:"https://www.youtube.com/embed/UMURCYbO7H0",
-2:"https://www.youtube.com/embed/kxW-HJNjs8w",
-3:"https://www.youtube.com/embed/SJl1HEvPI6A",
-4:"https://www.youtube.com/embed/F7P2mEWZPjk",
-5:"https://www.youtube.com/embed/YF_C7zUitd4",
-6:"https://www.youtube.com/embed/Hr7z0QUf3dQ",
-7:"https://www.youtube.com/embed/RxgPkNASLTk?si=ExV0wjnd0d9l8Pa8",
-8:"https://www.youtube.com/embed/_kF5tj0OAOY",
-9:"https://www.youtube.com/embed/c6SD_kQakjs",
-10:"https://www.youtube.com/embed/kzad8uVrq_I", 
-11:"https://www.youtube.com/embed/biG4R6X-P4w"
-};
+    function attemptLogin() {
+        sha256(document.getElementById("adminPassInput").value).then(hash => {
+            if(hash === PASS_HASH) {
+                isAdmin = true;
+                document.getElementById("loginModal").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+                showToast("Acceso Concedido");
+            } else { showToast("Contraseña Incorrecta", "error"); }
+        });
+    }
 
-function cambiarVideo(id){
-document.getElementById("videoFrame").src=videosYT[id];
-}
+    function openLogin() { isAdmin ? (document.getElementById("adminPanel").style.display="block") : (document.getElementById("loginModal").style.display="flex"); }
+    function cerrarSesion() { isAdmin = false; document.getElementById("adminPanel").style.display="none"; }
 
-const videosReligiosos={
-1:"https://www.youtube.com/embed/jPwQKJS7Tms",
-2:"https://www.youtube.com/embed/3aF9AJm0RFc",
-3:"https://www.youtube.com/embed/dQw4w9WgXcQ",
-4:"https://www.youtube.com/embed/kxW-HJNjs8w",
-5:"https://www.youtube.com/embed/F7P2mEWZPjk",
-6:"https://www.youtube.com/embed/YF_C7zUitd4",
-7:"https://www.youtube.com/embed/Hr7z0QUf3dQ",
-8:"https://www.youtube.com/embed/RxgPkNASLTk",
-9:"https://www.youtube.com/embed/Vuzy74ORc5w"
-};
+    function toggleStreamField() {
+        const cat = document.getElementById("categoria").value;
+        const streamInput = document.getElementById("stream1");
+        if (cat === 'anuncios') {
+            streamInput.placeholder = "URL del video (opcional - puedes subir solo imagen)";
+        } else {
+            streamInput.placeholder = "URL del stream o video";
+        }
+    }
 
-function cambiarVideoReligioso(id){
-document.getElementById("videoReligiosoFrame").src=videosReligiosos[id];
-}
+    function toggleLogoInput() {
+        const selectedOption = document.querySelector('input[name="logoOption"]:checked').value;
+        const logoInput = document.getElementById("logo");
+        const logoFile = document.getElementById("logoFile");
+        const imagePreview = document.getElementById("imagePreview");
+        
+        if (selectedOption === 'link') {
+            logoInput.style.display = 'block';
+            logoFile.style.display = 'none';
+            imagePreview.style.display = 'none';
+        } else {
+            logoInput.style.display = 'none';
+            logoFile.style.display = 'block';
+            logoFile.onchange = previewImage;
+        }
+    }
+
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function guardarContenido() {
+        const cat = document.getElementById("categoria").value;
+        const nombre = document.getElementById("nombre").value;
+        const url = document.getElementById("stream1").value.trim();
+        
+        if(!cat || !nombre) return showToast(" Faltan datos (categoría y nombre son requeridos)", "error");
+        
+        const selectedOption = document.querySelector('input[name="logoOption"]:checked').value;
+        let hasImage = false;
+        
+        if (selectedOption === 'link') {
+            hasImage = document.getElementById("logo").value.trim() !== "";
+        } else {
+            hasImage = document.getElementById("logoFile").files.length > 0;
+        }
+        
+        // NUEVA VALIDACIÓN FLEXIBLE: Permitir cualquier combinación
+        // Solo imagen, solo stream, o ambos
+        if (!url && !hasImage) {
+            return showToast(" Debes agregar al menos una URL de stream O una imagen", "error");
+        }
+        
+        // Mostrar mensaje de procesamiento
+        showToast(" Procesando...", "info");
+        
+        let logoURL;
+        
+        if (selectedOption === 'link') {
+            logoURL = document.getElementById("logo").value.trim() || "https://via.placeholder.com/80";
+            // Si solo hay imagen sin URL, usar la imagen como URL
+            const finalURL = url || logoURL;
+            saveContent(cat, nombre, finalURL, logoURL, !url && hasImage);
+        } else {
+            const fileInput = document.getElementById("logoFile");
+            if (fileInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    logoURL = e.target.result; // Base64 de la imagen
+                    // Si solo hay imagen sin URL, usar la imagen como URL
+                    const finalURL = url || logoURL;
+                    saveContent(cat, nombre, finalURL, logoURL, !url && hasImage);
+                }
+                reader.onerror = function() {
+                    showToast(" Error al procesar la imagen", "error");
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+                return; // Salir y esperar a que termine de leer
+            } else {
+                logoURL = "https://via.placeholder.com/80";
+                const finalURL = url || logoURL;
+                saveContent(cat, nombre, finalURL, logoURL, false);
+            }
+        }
+    }
+
+    function saveContent(cat, nombre, url, logo, isOnlyImage = false) {
+        try {
+            const id = Date.now();
+            storage[cat][id] = { nombre, url, logo };
+            localStorage.setItem("tv_sfc_data", JSON.stringify(storage));
+            
+            // Mensajes específicos según lo que se subió
+            let mensaje = " Guardado exitosamente";
+            
+            if (isOnlyImage) {
+                mensaje = " Imagen subida exitosamente";
+            } else if (!document.getElementById("stream1").value.trim() && logo !== "https://via.placeholder.com/80") {
+                mensaje = " Contenido guardado con imagen";
+            } else if (document.getElementById("stream1").value.trim() && logo === "https://via.placeholder.com/80") {
+                mensaje = " Stream guardado exitosamente";
+            }
+            
+            showToast(mensaje);
+            renderAllGrids();
+            mostrarTodosElementos();
+            
+            // Limpiar formulario
+            document.getElementById("nombre").value = "";
+            document.getElementById("stream1").value = "";
+            document.getElementById("logo").value = "";
+            document.getElementById("logoFile").value = "";
+            document.getElementById("imagePreview").style.display = "none";
+            
+            // Resetear radio buttons
+            document.querySelector('input[name="logoOption"][value="link"]').checked = true;
+            toggleLogoInput();
+        } catch (error) {
+            showToast(" Error al guardar: " + error.message, "error");
+        }
+    }
+
+    function mostrarTodosElementos() {
+        const cat = document.getElementById("verCategoria").value;
+        const lista = document.getElementById("listaElementos");
+        lista.innerHTML = "";
+        if(!cat) return;
+        Object.keys(dataInicial[cat]).forEach(id => {
+            lista.innerHTML += `<div class="admin-item-row"><span>${dataInicial[cat][id].nombre} (Sistema)</span></div>`;
+        });
+        Object.keys(storage[cat]).forEach(id => {
+            lista.innerHTML += `<div class="admin-item-row"><span>${storage[cat][id].nombre}</span><button class="btn btn-danger" onclick="eliminarElemento('${cat}', '${id}')">Eliminar</button></div>`;
+        });
+    }
+
+    function eliminarElemento(cat, id) {
+        delete storage[cat][id];
+        localStorage.setItem("tv_sfc_data", JSON.stringify(storage));
+        showToast("Eliminado", "error");
+        mostrarTodosElementos();
+        renderAllGrids();
+    }
+
+    function renderGrid(cat, gridId, clickFn) {
+        const grid = document.getElementById(gridId);
+        if(!grid) return;
+        grid.innerHTML = "";
+        const fusion = {...dataInicial[cat], ...storage[cat]};
+        Object.keys(fusion).forEach(id => {
+            const item = fusion[id];
+            const likeId = cat + "_" + id;
+            const isLiked = likes[likeId] ? 'active' : '';
+            const div = document.createElement("div");
+            div.className = "item";
+            div.onclick = () => window[clickFn](item.url);
+            div.innerHTML = `
+                <div class="like-container ${isLiked}" onclick="toggleLike(event, '${likeId}')"></div>
+                <img src="${item.logo}">
+                <p>${item.nombre}</p>`;
+            grid.appendChild(div);
+        });
+    }
+
+    function renderAllGrids() {
+        renderGrid('canales', 'canalesGrid', 'playCanal');
+        renderGrid('radio', 'radioGrid', 'playRadio');
+        renderGrid('radioSFC', 'radioSFCGrid', 'playRadioSFC');
+        renderGrid('videos', 'videosGrid', 'playVideo');
+        renderGrid('religiosos', 'religiososGrid', 'playReligioso');
+        renderGrid('deportes', 'deportesGrid', 'playDeporte');
+        renderGrid('anuncios', 'anunciosGrid', 'playAnuncio');
+        renderGrid('eventos', 'eventosGrid', 'playFB');
+    }
+
+    function playCanal(url) { const v = document.getElementById("tvPlayer"); v.src = url; v.play(); }
+    function playRadio(url) { const a = document.getElementById("radioPlayer"); a.src = url; a.play(); }
+    function playRadioSFC(url) { const a = document.getElementById("radioSFCPlayer"); a.src = url; a.play(); }
+    function playVideo(url) { document.getElementById("videoFrame").src = url; }
+    function playReligioso(url) { document.getElementById("religiosoFrame").src = url; }
+    function playDeporte(url) { document.getElementById("deportesFrame").src = url; }
+    function playAnuncio(url) {
+        const container = document.getElementById("anuncioContent");
+        if(url.includes("youtube.com") || url.includes("youtu.be")) {
+            container.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+        } else {
+            container.innerHTML = `<img src="${url}" style="width:100%; height:100%; object-fit:contain;">`;
+        }
+    }
+    function playFB(url) { 
+        document.getElementById("facebookliveFrame").src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false`; 
+    }
+    function compartirApp() {
+        if (navigator.share) { navigator.share({ title: 'TV SFC LA UNION', url: window.location.href }); }
+        else { alert("Enlace: " + window.location.href); }
+    }
+    window.onload = renderAllGrids;
 </script>
-
-</body
+</body>
+</html>
